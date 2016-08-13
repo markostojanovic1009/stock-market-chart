@@ -1,6 +1,7 @@
 const knex = require('../config/database');
 
 const Stock = {
+
     create(stockSymbol) {
         return new Promise((resolve, reject) => {
            return knex('stocks')
@@ -14,6 +15,18 @@ const Stock = {
                         reject({msg: "An error occurred. Please try later"});
                     }
                });
+        });
+    },
+
+    remove(stockId) {
+        return new Promise((resolve, reject) => {
+            return knex('stocks')
+                .where('id', stockId)
+                .del().then(() => {
+                    resolve();
+                }).catch((error) => {
+                    reject(error);
+                });
         });
     }
 };

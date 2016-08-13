@@ -12,7 +12,6 @@ chai.use(require('chai-as-promised'));
 describe('Stock Model', () => {
 
     beforeEach((done) => {
-        console.log(process.env.NODE_ENV);
         knex.migrate.latest()
             .then(() => {
                 return knex.seed.run();
