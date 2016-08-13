@@ -1,4 +1,4 @@
-if(!process.env.NODE_ENV) {
+if(process.env.NODE_ENV !== 'production') {
   var dotenv = require('dotenv');
   dotenv.load();
 }

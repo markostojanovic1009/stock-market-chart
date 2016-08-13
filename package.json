@@ -10,7 +10,7 @@
     "start": "node server.js",
     "test": "npm run test:client && npm run test:server",
     "test:client": "mocha test/client --recursive --compilers js:babel-register",
-    "test:server": "mocha test/server --recursive --compilers js:babel-register"
+    "test:server": "NODE_ENV=test mocha test/server --recursive --compilers js:babel-register"
   },
   "dependencies": {
     "babel-core": "^6.7.2",
@@ -50,6 +50,7 @@
     "babel-plugin-rewire": "1.0.0-rc-3",
     "babel-register": "^6.8.0",
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "enzyme": "^2.3.0",
     "fetch-mock": "3.0.2",
     "mocha": "^2.4.5",
@@ -57,7 +58,8 @@
     "redux-mock-store": "^1.0.2",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
-    "supertest": "^1.2.0"
+    "supertest": "^1.2.0",
+    "supertest-as-promised": "^4.0.0"
   },
   "engines": {
     "node": "6.3.1"

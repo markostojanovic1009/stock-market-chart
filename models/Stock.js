@@ -1,4 +1,4 @@
-import knex from '../config/database';
+const knex = require('../config/database');
 
 const Stock = {
     create(stockSymbol) {
@@ -8,7 +8,11 @@ const Stock = {
                .then(() => {
                     resolve();
                }).catch((error) => {
-                    reject(error);
+                    if(error.code == '23505') { // Postgres code for unique violation
+                        reject({msg: `Company with symbol ${stockSymbol.toUpperCase()} was already added.`});
+                    } else {
+                        reject({msg: "An error occurred. Please try later"});
+                    }
                });
         });
     }
