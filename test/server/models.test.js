@@ -42,6 +42,21 @@ describe('Stock Model', () => {
 
     });
 
+    describe('remove', () => {
+
+        it('should delete a new stock', () => {
+
+            return expect( Stock.create("GOOG").then((stock) => {
+                return Stock.remove(stock.id);
+            }).then(() => {
+                return knex.select('*').from('stocks');
+            })).to.eventually.deep.equal([]);
+
+        });
+
+
+    });
+
     afterEach((done) => {
         knex.migrate.rollback().then(() => {
             done();

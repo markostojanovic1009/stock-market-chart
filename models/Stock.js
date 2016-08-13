@@ -8,7 +8,7 @@ const Stock = {
                .returning(['id', 'symbol'])
                .insert({symbol: stockSymbol.toUpperCase()})
                .then((array) => {
-                    resolve(array);
+                    resolve(array[0]);
                }).catch((error) => {
                     if(error.code == '23505') { // Postgres code for unique violation
                         reject({msg: `Company with symbol ${stockSymbol.toUpperCase()} was already added.`});
