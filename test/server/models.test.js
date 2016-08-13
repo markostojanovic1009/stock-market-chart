@@ -59,8 +59,8 @@ describe('Stock Model', () => {
 
         it('should delete a new stock', () => {
 
-            return expect( knex('stock').insert({symbol:"GOOG"}, 'id').then((stockId) => {
-                return Stock.remove(stockId);
+            return expect( knex('stocks').insert({symbol: "GOOG"}, 'id').then((stockId) => {
+                return Stock.remove(parseInt(stockId));
             }).then(() => {
                 return knex.select('*').from('stocks');
             })).to.eventually.deep.equal([]);
