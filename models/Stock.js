@@ -5,9 +5,10 @@ const Stock = {
     create(stockSymbol) {
         return new Promise((resolve, reject) => {
            return knex('stocks')
+               .returning(['id', 'symbol'])
                .insert({symbol: stockSymbol.toUpperCase()})
-               .then(() => {
-                    resolve();
+               .then((array) => {
+                    resolve(array);
                }).catch((error) => {
                     if(error.code == '23505') { // Postgres code for unique violation
                         reject({msg: `Company with symbol ${stockSymbol.toUpperCase()} was already added.`});
