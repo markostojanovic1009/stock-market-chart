@@ -23,6 +23,19 @@ describe('Stock Model', () => {
             });
     });
 
+    describe('all', () => {
+
+        it('should return an empty array when no stocks are present', () => {
+           return expect( Stock.all() ).to.eventually.deep.equal([]);
+        });
+
+        it('should return an array of stocks', () => {
+           return expect( knex('stocks').insert([{symbol: 'AAPL'}, {symbol: 'GOOG'}]).then(() => {
+               return Stock.all();
+           })).to.eventually.have.lengthOf(2);
+        });
+    });
+
     describe('create', () => {
 
         it('should create a new stock', () => {

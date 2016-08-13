@@ -2,6 +2,18 @@ const knex = require('../config/database');
 
 const Stock = {
 
+    all() {
+        return new Promise((resolve, reject) => {
+            return knex.select('id', 'symbol', 'created_at').from('stocks')
+                .then((stocks) => {
+                    resolve(stocks);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    },
+
     create(stockSymbol) {
         return new Promise((resolve, reject) => {
            return knex('stocks')
