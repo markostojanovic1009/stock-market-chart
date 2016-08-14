@@ -168,6 +168,38 @@ describe('StockValue model', () => {
 
     });
 
+    describe('getStockValues', () => {
+
+        it('should return all values for the stock', () => {
+            const value1 = 2133.32;
+            const value2 = 2000.23;
+            const day1 = '2016-08-13';
+            const day2 = '2016-08-12';
+            return expect( knex('stocks').insert({symbol: "GOOG"}, 'id').then((insertedId) => {
+                return knex('stock_values').insert([
+                    {
+                        stock_id: parseInt(insertedId),
+                        value: value1,
+                        day: day1
+                    }, {
+                        stock_id: parseInt(insertedId),
+                        value: value2,
+                        day: day2
+                    }
+                ]);
+            }).then(() => {
+                return StockValue.getStockValues(1);
+            }) ).to.eventually.deep.equal([{
+                value: value1.toString(),
+                day: day1
+            },{
+                value: value2.toString(),
+                day: day2
+            }]);
+        })
+
+    });
+
     afterEach((done) => {
         knex.migrate.rollback().then(() => {
             done();

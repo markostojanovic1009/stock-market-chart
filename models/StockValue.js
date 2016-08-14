@@ -1,6 +1,17 @@
 const knex = require('../config/database');
 
 
+function formatDate (date) {
+    function fill(value) {
+        if(value < 10) {
+            return "0" + value.toString();
+        } else {
+            return value.toString();
+        }
+    }
+    return date.getFullYear() + "-" + fill(date.getMonth() + 1) + '-' + fill(date.getDate());
+}
+
 /**
  * Database schema:
  * id SERIAL - Primary key,
@@ -43,6 +54,23 @@ const StockValue = {
                reject();
            });
         });
+    },
+
+    getStockValues(stock_id) {
+        return new Promise((resolve, reject) => {
+            knex.select('value', 'day').from('stock_values')
+                .where({stock_id}).orderBy('day', 'desc').then((stockValues) => {
+                    const mapped = stockValues.map((item) => {
+                        return {
+                            value: item.value,
+                            day: formatDate(item.day)
+                        }
+                    });
+                resolve(mapped);
+            }).catch((error) => {
+                reject(error);
+            });
+        })
     }
 
 };

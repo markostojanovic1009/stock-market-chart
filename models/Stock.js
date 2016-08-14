@@ -1,12 +1,24 @@
 const knex = require('../config/database');
 
+
+function formatDate (date) {
+    function fill(value) {
+        if(value < 10) {
+            return "0" + value.toString();
+        } else {
+            return value.toString();
+        }
+    }
+    return date.getFullYear() + "-" + fill(date.getMonth() + 1) + '-' + fill(date.getDate());
+}
+
+
 /**
  * Database schema:
  * id SERIAL - Primary key,
  * symbol VARCHAR(255) NOT NULL UNIQUE - NASDAQ symbol for the stock. They are guaranteed to be unique,
  * created_at DATE - Defaults to knex.fn.now()
  */
-
 
 const Stock = {
 

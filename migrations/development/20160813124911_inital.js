@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
             table.increments();
             table.integer('stock_id').references('stocks.id').onDelete('CASCADE');
             table.decimal('value', 14, 2);
-            table.date('day');
+            table.date('day').defaultTo(knex.fn.now());
         })
     ])
 };
