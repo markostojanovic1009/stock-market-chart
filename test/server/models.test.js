@@ -6,6 +6,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 import Stock from '../../models/Stock';
+import StockValue from '../../models/StockValue';
 
 chai.use(require('chai-as-promised'));
 
@@ -77,4 +78,63 @@ describe('Stock Model', () => {
             console.log("Database cleanup error: ", error);
         });
     });
+});
+
+describe('StockValue model', () => {
+
+    beforeEach((done) => {
+        knex.migrate.latest()
+            .then(() => {
+                return knex.seed.run();
+            }).then(() => {
+            done();
+        }).catch((error) => {
+            console.log("Database setup error: ", error);
+            done();
+        });
+    });
+
+    describe('setValue', () => {
+        
+        it('should set the value of a stock at a given date', () => {
+            let insertedStockId = 1;
+            const day = new Date().toDateString();
+            const value = 100.05;
+            return expect( knex('stocks').insert({symbol: 'GOOG'}, 'id').then((stockId) => {
+                insertedStockId = stockId;
+                return StockValue.setValue(parseInt(stockId), value, day);
+            }).then(() => {
+                return knex.select('stock_id', 'value').from('stock_values');
+            })).to.eventually.deep.equal([{
+                value: value.toString(),
+                stock_id: insertedStockId
+            }]);
+        });
+
+        it('should return an error when a wrong stock_id is passed', () => {
+           return expect( StockValue.setValue(1000, 2000.00) ).to.be.rejected.and.eventually.deep.equal({
+               msg: "Stock id is invalid."
+           });
+        });
+
+        it('should properly truncate the value to only 2 decimal places', () => {
+            return expect( knex('stocks').insert({symbol: 'GOOG'}, 'id').then((stockId) => {
+                return StockValue.setValue(parseInt(stockId), 200.03043);
+            }).then(() => {
+                return knex.select('value').from('stock_values');
+            }) ).to.eventually.deep.equal([{
+                value: '200.03'
+            }]);
+        });
+
+    });
+
+    afterEach((done) => {
+        knex.migrate.rollback().then(() => {
+            done();
+        }).catch((error) => {
+            console.log("Database cleanup error: ", error);
+        });
+    });
+
 });
