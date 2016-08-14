@@ -95,7 +95,7 @@ describe('StockValue model', () => {
     });
 
     describe('setValue', () => {
-        
+
         it('should set the value of a stock at a given date', () => {
             let insertedStockId = 1;
             const day = new Date().toDateString();
@@ -125,6 +125,45 @@ describe('StockValue model', () => {
             }) ).to.eventually.deep.equal([{
                 value: '200.03'
             }]);
+        });
+
+    });
+
+    describe('getStockValueForDay', () => {
+
+        it('should return the stock_id and day', () => {
+            let stock_id = 1;
+            const value = 200.05;
+            return expect( knex('stocks').insert({symbol: "GOOG"}, 'id').then((insertedId) => {
+                stock_id = parseInt(insertedId);
+                return knex('stock_values').insert({stock_id, value});
+            }).then(() => {
+                return StockValue.getStockValueForDay(1, new Date().toDateString());
+            }) ).to.eventually.deep.equal([{
+                value: value.toString(),
+                stock_id
+            }]);
+
+        });
+
+        it('should return an empty array when wrong date is passed', () => {
+
+            return expect( knex('stocks').insert({symbol: "GOOG"}, 'id').then((insertedId) => {
+                return knex('stock_values').insert({stock_id: parseInt(insertedId), value: 2133.32});
+            }).then(() => {
+                return StockValue.getStockValueForDay(1, '2023-03-13');
+            }) ).to.eventually.deep.equal([]);
+
+        });
+
+        it('should return an empty array when wrong stock_id is passed', () => {
+
+            return expect( knex('stocks').insert({symbol: "GOOG"}, 'id').then((insertedId) => {
+                return knex('stock_values').insert({stock_id: parseInt(insertedId), value: 2133.32});
+            }).then(() => {
+                return StockValue.getStockValueForDay(100, new Date().toDateString());
+            }) ).to.eventually.deep.equal([]);
+
         });
 
     });

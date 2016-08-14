@@ -32,6 +32,17 @@ const StockValue = {
                 }
             });
         });
+    },
+
+    getStockValueForDay(stock_id, day) {
+        return new Promise((resolve, reject) => {
+           knex.select('stock_id', 'value').from('stock_values').where({stock_id, day}).then((stockValue) => {
+               resolve(stockValue);
+           }).catch((error) => {
+               console.log(error);
+               reject();
+           });
+        });
     }
 
 };
