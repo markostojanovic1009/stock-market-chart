@@ -1,5 +1,14 @@
 const knex = require('../config/database');
 
+
+/**
+ * Database schema:
+ * id SERIAL - Primary key,
+ * value decimal(14, 2) - precision is 2 decimal digits for cents and 14 for dollars,
+ * stock_id INTEGER FOREIGN KEY REFERENCES Stock.id,
+ * day DATE - Day when the stock had the given value. Defaults to knex.fn.now()
+ */
+
 const StockValue = {
 
     setValue(stockId, value, day) {

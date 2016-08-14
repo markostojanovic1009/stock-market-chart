@@ -1,5 +1,13 @@
 const knex = require('../config/database');
 
+/**
+ * Database schema:
+ * id SERIAL - Primary key,
+ * symbol VARCHAR(255) NOT NULL UNIQUE - NASDAQ symbol for the stock. They are guaranteed to be unique,
+ * created_at DATE - Defaults to knex.fn.now()
+ */
+
+
 const Stock = {
 
     all() {
