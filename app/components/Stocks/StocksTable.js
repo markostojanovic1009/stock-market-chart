@@ -9,12 +9,12 @@ class StocksTable extends React.Component {
     render() {
         return (
             <div>
-                STOCKS:
-                <ul>
+                <ul className="stocks-table">
                     {this.props.stocks.map((stock) => {
                         return (
-                            <li key={stock.id}>
-                                {stock.symbol} created at {stock.created_at}
+                            <li key={stock.id} className="stock-wrapper">
+                                <div className="stock-symbol">{stock.symbol}</div>
+                                <div className="stock-created-at">Tracking since:  {stock.created_at}</div>
                             </li>
                         );
                     })}

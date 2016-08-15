@@ -1,5 +1,6 @@
 @import "settings";
 @import "vendor/foundation/foundation";
+@import 'index.scss';
 
 @include foundation-global-styles;
 @include foundation-grid;

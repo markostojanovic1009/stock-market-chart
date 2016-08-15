@@ -5,6 +5,20 @@
  * foundation.zurb.com
  * Licensed under MIT Open Source
  */
+.stocks-table {
+  list-style: none;
+  margin-right: 30px; }
+
+.stock-wrapper {
+  background: #404040;
+  padding: 10px;
+  color: #CDD2D4;
+  margin-bottom: 10px; }
+
+.stock-symbol {
+  font-size: 2em;
+  font-weight: bold; }
+
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
    * 1. Set default font family to sans-serif.
