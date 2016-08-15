@@ -25,3 +25,11 @@ export function removeStock(req, res) {
        res.status(400).send(error);
    });
 }
+
+export function getAllStocks(req, res) {
+    Stock.all().then((stocks) => {
+       res.status(200).send(stocks);
+    }).catch((error) => {
+        res.status(400).send(error);
+    });
+}

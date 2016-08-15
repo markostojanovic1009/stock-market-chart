@@ -32,7 +32,7 @@ const Stock = {
                     resolve(stocks);
                 })
                 .catch((error) => {
-                    reject(error);
+                    reject(genericMessage);
                 });
         });
     },

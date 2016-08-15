@@ -27,6 +27,18 @@ describe('stock controller', () => {
         });
     });
 
+    describe('GET /api/stock', () => {
+
+        it('should return all stocks', () => {
+            knex('stocks').insert([{symbol: 'GOOG'}, {symbol: 'AAPL'}]).then(() => {
+                request(server).get('/api/stock').expect(200).then((res) => {
+                    expect(res.body).to.have.lengthOf(2);
+                });
+            });
+        });
+
+    });
+
     describe('POST /api/stock', () => {
 
         it('should create a new stock', (done) => {
@@ -79,5 +91,6 @@ describe('stock controller', () => {
         });
 
     });
+
 
 });
