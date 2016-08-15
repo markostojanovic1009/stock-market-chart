@@ -64,4 +64,20 @@ describe('stock controller', () => {
 
     });
 
+    describe('DELETE /api/stock/:stockId', () => {
+
+        it('should delete a stock', () => {
+
+            knex('stocks').insert({symbol: 'GOOG'}, 'id').then((stockId) => {
+                request(server).del(`/api/stock/${parseInt(stockId)}`).expect(204);
+            });
+
+        });
+
+        it('should return 204 on wrong stockId param', () => {
+            return request(server).del('/api/stock/4').expect(204);
+        });
+
+    });
+
 });

@@ -45,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 import * as stockController from './controllers/stock';
 
 app.post('/api/stock', stockController.createStock);
+app.delete('/api/stock/:stockId', stockController.removeStock);
 
 if (app.get('env') === 'development') {
   app.use(require('webpack-dev-middleware')(compiler, {

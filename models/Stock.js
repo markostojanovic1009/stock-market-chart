@@ -13,13 +13,16 @@ function formatDate (date) {
 }
 
 
+const genericMessage = {
+    msg: "An error occurred. Please try later"
+};
+
 /**
  * Database schema:
  * id SERIAL - Primary key,
  * symbol VARCHAR(255) NOT NULL UNIQUE - NASDAQ symbol for the stock. They are guaranteed to be unique,
  * created_at DATE - Defaults to knex.fn.now()
  */
-
 const Stock = {
 
     all() {
@@ -45,7 +48,7 @@ const Stock = {
                     if(error.code == '23505') { // Postgres code for unique violation
                         reject({msg: `Company with symbol ${stockSymbol.toUpperCase()} was already added.`});
                     } else {
-                        reject({msg: "An error occurred. Please try later"});
+                        reject(genericMessage);
                     }
                });
         });
@@ -58,7 +61,7 @@ const Stock = {
                 .del().then(() => {
                     resolve();
                 }).catch((error) => {
-                    reject(error);
+                    reject(genericMessage);
                 });
         });
     }

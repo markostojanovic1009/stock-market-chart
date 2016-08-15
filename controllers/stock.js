@@ -16,3 +16,12 @@ export function createStock(req, res) {
         res.status(400).send(error);
     });
 }
+
+export function removeStock(req, res) {
+   const stockId = req.params.stockId;
+   Stock.remove(stockId).then(() => {
+       res.sendStatus(204);
+   }).catch((error) => {
+       res.status(400).send(error);
+   });
+}
