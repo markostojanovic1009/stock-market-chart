@@ -52,3 +52,21 @@ export function setStockValue(req, res) {
         res.status(400).send(error);
     });
 }
+
+export function getStockValue(req, res) {
+    const day = req.query.day;
+    const stockId = req.params.stockId;
+    if(day) {
+        StockValue.getStockValueForDay(stockId, day).then((stockValue) => {
+            res.status(200).send(stockValue);
+        }).catch((error) => {
+            res.status(400).send(error);
+        });
+    } else {
+        StockValue.getStockValues(stockId).then((stockValues) => {
+            res.status(200).send(stockValues);
+        }).catch((error) => {
+            res.status(400).send(error);
+        });
+    }
+}

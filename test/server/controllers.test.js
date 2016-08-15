@@ -115,6 +115,56 @@ describe('stock controller', () => {
 
     });
 
+    describe('GET /api/stock/:stockId', () => {
+
+        it('should get the value of a stock on a day passed in a query', () => {
+
+            const day = '2016-08-10';
+            const value = 2142.85;
+
+            return expect( knex('stocks').insert({symbol: 'GOOG'}).then(() => {
+                return knex('stock_values').insert({stock_id: 1, value, day});
+            }).then(() => {
+                return request(server).get(`/api/stock/1?day=${day}`).expect(200)
+            }).then((res) => {
+                return res.body;
+            }) ).to.eventually.deep.equal([{
+                value: value.toString(),
+                stock_id: 1
+            }]);
+
+        });
+
+        it('should get the values and dates when no day query is passed', () => {
+
+            const day1 = '2016-04-15';
+            const value1 = 2034.32;
+            const day2 = '2016-07-23';
+            const value2 = 3482.32;
+
+            return expect( knex('stocks').insert( {symbol: 'GOOG' }).then(() => {
+               return knex('stock_values').insert([
+                   {stock_id: 1, value: value1, day: day1},
+                   {stock_id: 1, value:value2, day: day2}
+                   ]);
+            }).then(() => {
+                return request(server).get('/api/stock/1').expect(200);
+            }).then((res) => {
+                return res.body;
+            }) ).to.eventually.deep.equal([
+                {
+                    value: value2.toString(),
+                    day: day2
+                }, {
+                    value: value1.toString(),
+                    day: day1
+                }
+            ]);
+
+        })
+
+    });
+
     describe('DELETE /api/stock/:stockId', () => {
 
         it('should delete a stock', () => {
