@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Controllers
-import * as stockController from './controllers/stock';
+const stockController = require('./controllers/stock');
 
 app.get('/api/stock', stockController.getAllStocks);
 app.post('/api/stock', stockController.createStock);
