@@ -29,7 +29,13 @@ const Stock = {
         return new Promise((resolve, reject) => {
             return knex.select('id', 'symbol', 'created_at').from('stocks')
                 .then((stocks) => {
-                    resolve(stocks);
+                    resolve(stocks.map((stock) => {
+                        return {
+                            id: stock.id,
+                            symbol: stock.symbol,
+                            created_at: formatDate(stock.created_at)
+                        };
+                    }));
                 })
                 .catch((error) => {
                     reject(genericMessage);
