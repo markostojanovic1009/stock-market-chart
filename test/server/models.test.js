@@ -1,6 +1,3 @@
-const server = require('../../server');
-const request = require('supertest');
-
 const knex = require('../../config/database');
 const chai = require('chai');
 const expect = chai.expect;

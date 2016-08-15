@@ -40,6 +40,12 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Controllers
+import * as stockController from './controllers/stock';
+
+app.post('/api/stock', stockController.createStock);
+
 if (app.get('env') === 'development') {
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,

@@ -10,6 +10,8 @@
     "start": "node server.js",
     "test": "npm run test:client && npm run test:server",
     "test:client": "mocha test/client --recursive --compilers js:babel-register",
+    "test:controllers": "NODE_ENV=test mocha test/server/controllers.test.js --recursive --compilers js:babel-register",
+    "test:models": "NODE_ENV=test mocha test/server/models.test.js --recursive --compilers js:babel-register",
     "test:server": "NODE_ENV=test mocha test/server --recursive --compilers js:babel-register"
   },
   "dependencies": {
