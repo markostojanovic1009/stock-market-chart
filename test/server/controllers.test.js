@@ -76,6 +76,45 @@ describe('stock controller', () => {
 
     });
 
+    describe('POST /api/stock/:stockId', () => {
+
+        it('should add the value of a stock', () => {
+            const value = 200.05;
+            const day = '2016-08-15';
+
+            knex('stocks').insert({symbol: 'GOOG'}, 'id').then((stockId) => {
+                return request(server).post(`/api/stock/${parseInt(stockId)}`).send({ value, day }).expect(204);
+            }).then(() => {
+                expect( knex.select('value', 'stock_id').from('stock_values').where('stock_id', 1) )
+                    .to.eventually.deep.equal( [{
+                    value: value.toString(),
+                    stock_id: 1
+                }] );
+            });
+
+        });
+
+        it('should return an error when wrong stock_id is sent', () => {
+
+            request(server).post('/api/stock/4').send({value: 200}).expect(400).then((res) => {
+                expect(res.body).to.deep.equal({
+                    msg: "Stock id is invalid."
+                });
+            });
+
+        });
+
+        it('should return an erro when value is not a float', () => {
+
+            request(server).post('/api/stock/1').send({value: 'STRING'}).expect(400).then((res) => {
+               expect(res.body).to.deep.equal([{
+                   msg: "Invalid value."
+               }]);
+            });
+        })
+
+    });
+
     describe('DELETE /api/stock/:stockId', () => {
 
         it('should delete a stock', () => {

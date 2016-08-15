@@ -46,6 +46,7 @@ import * as stockController from './controllers/stock';
 
 app.get('/api/stock', stockController.getAllStocks);
 app.post('/api/stock', stockController.createStock);
+app.post('/api/stock/:stockId', stockController.setStockValue);
 app.delete('/api/stock/:stockId', stockController.removeStock);
 
 if (app.get('env') === 'development') {
