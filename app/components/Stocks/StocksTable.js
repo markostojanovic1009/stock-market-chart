@@ -15,6 +15,7 @@ class StocksTable extends React.Component {
                             <li key={stock.id} className="stock-wrapper">
                                 <div className="stock-symbol">{stock.symbol}</div>
                                 <div className="stock-created-at">Tracking since:  {stock.created_at}</div>
+                                <div className="stock-description">{stock.description}</div>
                             </li>
                         );
                     })}

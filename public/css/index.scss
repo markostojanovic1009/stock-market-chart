@@ -13,4 +13,18 @@
 .stock-symbol {
     font-size: 2em;
     font-weight: bold;
+    display: inline-block;
+}
+
+.stock-created-at {
+    display: inline-block;
+    margin-left: 20px;
+    text-align: right;
+    width: 70%;
+}
+
+.stock-description {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 1.2em;
 }

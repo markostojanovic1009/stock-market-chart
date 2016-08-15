@@ -15,6 +15,7 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable('stocks', (stocks) => {
             stocks.increments();
             stocks.string('symbol').notNullable().unique();
+            stocks.text('description');
             stocks.date('created_at').defaultTo(formatDate(new Date()));
         }).createTable('stock_values', (table) => {
             table.increments();

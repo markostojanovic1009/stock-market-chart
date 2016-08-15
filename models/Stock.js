@@ -21,18 +21,20 @@ const genericMessage = {
  * Database schema:
  * id SERIAL - Primary key,
  * symbol VARCHAR(255) NOT NULL UNIQUE - NASDAQ symbol for the stock. They are guaranteed to be unique,
+ * description text,
  * created_at DATE - Defaults to knex.fn.now()
  */
 const Stock = {
 
     all() {
         return new Promise((resolve, reject) => {
-            return knex.select('id', 'symbol', 'created_at').from('stocks')
+            return knex.select('id', 'symbol', 'created_at', 'description').from('stocks')
                 .then((stocks) => {
                     resolve(stocks.map((stock) => {
                         return {
                             id: stock.id,
                             symbol: stock.symbol,
+                            description: stock.description,
                             created_at: formatDate(stock.created_at)
                         };
                     }));
@@ -43,11 +45,11 @@ const Stock = {
         });
     },
 
-    create(stockSymbol) {
+    create(stockSymbol, description) {
         return new Promise((resolve, reject) => {
            return knex('stocks')
-               .returning(['id', 'symbol'])
-               .insert({symbol: stockSymbol.toUpperCase()})
+               .returning(['id', 'symbol', 'description'])
+               .insert({symbol: stockSymbol.toUpperCase(), description})
                .then((array) => {
                     resolve(array[0]);
                }).catch((error) => {
