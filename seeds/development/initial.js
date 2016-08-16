@@ -10,9 +10,10 @@ exports.seed = function(knex, Promise) {
           {symbol: 'AAPL', description: 'Apple, Inc. Makes iPhones, iPads and other "i" stuff'}], 'id');
     }).then((ids) => {
       return knex('stock_values').insert([
-          {stock_id: parseInt(ids[0]), value: Math.random() * 100},
+          {stock_id: parseInt(ids[0]), value: Math.random() * 100, day: '2016-08-13'},
           {stock_id: parseInt(ids[0]), value: Math.random() * 100, day: '2016-08-14'},
-          {stock_id: parseInt(ids[1]), value: Math.random() * 250}]);
+          {stock_id: parseInt(ids[1]), value: Math.random() * 250, day: '2016-08-14'}
+          ]);
     })
   );
 };

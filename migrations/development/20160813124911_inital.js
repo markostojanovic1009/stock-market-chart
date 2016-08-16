@@ -20,8 +20,8 @@ exports.up = function(knex, Promise) {
         }).createTable('stock_values', (table) => {
             table.increments();
             table.integer('stock_id').references('stocks.id').onDelete('CASCADE');
-            table.decimal('value', 14, 2);
-            table.date('day').defaultTo(formatDate( new Date()));
+            table.decimal('value', 14, 2).notNullable();
+            table.date('day').defaultTo(formatDate( new Date())).notNullable();
         })
     ])
 };
