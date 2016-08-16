@@ -70,3 +70,11 @@ export function getStockValue(req, res) {
         });
     }
 }
+
+export function getAllValues(req, res) {
+    StockValue.getAll().then((stockValues) => {
+        res.status(200).send(stockValues);
+    }).catch((error) => {
+        res.status(400).send(error);
+    });
+}

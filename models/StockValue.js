@@ -12,6 +12,12 @@ function formatDate (date) {
     return date.getFullYear() + "-" + fill(date.getMonth() + 1) + '-' + fill(date.getDate());
 }
 
+
+const genericMessage = {
+    msg: "An error occurred. Please try later"
+};
+
+
 /**
  * Database schema:
  * id SERIAL - Primary key,
@@ -71,6 +77,31 @@ const StockValue = {
                 reject(error);
             });
         })
+    },
+
+    getAll() {
+        return new Promise((resolve, reject) => {
+           knex.select('stock_id', 'value', 'day').from('stock_values').orderByRaw('day DESC, stock_id').then((result) => {
+               let sortedData = [];
+               result.forEach((item) => {
+                   for(let i = 0; i < sortedData.length; i++) {
+                       if(sortedData[i].day === formatDate(item.day)) {
+                           sortedData[i].stocks.push({id: item.stock_id, value: parseFloat(item.value)});
+                           return;
+                       }
+                   }
+                   sortedData.push({
+                       day: formatDate(item.day),
+                       stocks: [{id: item.stock_id, value: parseFloat(item.value)}]
+                   });
+               });
+
+              resolve(sortedData);
+           }).catch((error) => {
+               console.log(error);
+               reject(genericMessage);
+           });
+        });
     }
 
 };

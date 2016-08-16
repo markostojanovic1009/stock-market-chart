@@ -49,6 +49,7 @@ app.post('/api/stock', stockController.createStock);
 app.get('/api/stock/:stockId', stockController.getStockValue);
 app.post('/api/stock/:stockId', stockController.setStockValue);
 app.delete('/api/stock/:stockId', stockController.removeStock);
+app.get('/api/stock/values/all', stockController.getAllValues);
 
 if (app.get('env') === 'development') {
   app.use(require('webpack-dev-middleware')(compiler, {
