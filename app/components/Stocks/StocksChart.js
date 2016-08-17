@@ -1,19 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { getAllStockValues } from '../../actions/stocks_actions';
 
 class StocksChart extends React.Component {
     constructor() {
         super();
     }
 
-    componentDidMount() {
-        this.props.dispatch(getAllStockValues());
-        this.drawChart(document);
-    }
-
     componentDidUpdate() {
-        this.drawChart(document);
+        this.drawChart();
     }
 
     render() {
@@ -29,7 +23,7 @@ class StocksChart extends React.Component {
         );
     }
 
-    drawChart(document) {
+    drawChart() {
 
        $('#chart').highcharts('StockChart', {
             rangeSelector: {

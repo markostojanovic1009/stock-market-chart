@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Messages from './Messages';
 import StocksTable from './Stocks/StocksTable';
 import StocksChart from './Stocks/StocksChart';
-import { getAllStocks } from '../actions/stocks_actions';
+import { getAllStocks, getStockValues } from '../actions/stocks_actions';
 
 class Home extends React.Component {
     componentDidMount() {
