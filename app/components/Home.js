@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import Messages from './Messages';
 import StocksTable from './Stocks/StocksTable';
+import StocksChart from './Stocks/StocksChart';
 import { getAllStocks } from '../actions/stocks_actions';
 
 class Home extends React.Component {
@@ -20,7 +21,10 @@ class Home extends React.Component {
             <div className="expanded row">
                 {loading}
                 <Messages messages={this.props.messages}/>
-                <div className="medium-offset-8 medium-4 small-12">
+                <div className="medium-7 small-12 stock-chart-wrapper">
+                    <StocksChart stocks={this.props.stocks.items}/>
+                </div>
+                <div className="medium-4 small-12 stock-table-wrapper">
                     <StocksTable stocks={this.props.stocks.items} />
                 </div>
             </div>

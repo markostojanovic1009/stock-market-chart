@@ -31,6 +31,16 @@
   margin-top: 10px;
   font-size: 1.2em; }
 
+.stock-table-wrapper, .stock-chart-wrapper {
+  display: inline-block; }
+
+.stock-chart-wrapper {
+  vertical-align: top;
+  margin: 20px 0 0 20px; }
+
+.stock-table-wrapper {
+  margin-left: 20px; }
+
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
    * 1. Set default font family to sans-serif.

@@ -62,7 +62,9 @@ if (app.get('env') === 'development') {
 // React server rendering
 app.use(function(req, res) {
   var initialState = {
-    messages: {}
+    messages: {},
+    stocks: {isFetching: false, items: []},
+    stockValues: {isFetching: false, items: []}
   };
 
   var store = configureStore(initialState);

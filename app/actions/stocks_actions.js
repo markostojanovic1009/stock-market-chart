@@ -10,10 +10,8 @@ export function getAllStocks() {
             method: "GET",
             headers: { 'Content-Type': 'application/json' }
         }).then((response) => {
-            console.log(response);
             return response.json().then((json) => {
                if(response.ok) {
-                   console.log(json);
                    dispatch({
                        type: 'RECEIVE_STOCKS_SUCCESS',
                        stocks: json
@@ -25,6 +23,32 @@ export function getAllStocks() {
                    });
                }
             });
+        });
+    };
+}
+
+export function getAllStockValues() {
+    return (dispatch) => {
+        dispatch({
+            type: 'FETCH_STOCK_VALUES'
+        });
+        return fetch('/api/stock/values/all', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => {
+           return response.json().then((json) => {
+               if(response.ok) {
+                   dispatch({
+                       type: 'RECEIVE_STOCK_VALUES_SUCCESS',
+                       stockValues: json
+                   });
+               } else {
+                   dispatch({
+                       type: 'RECEIVE_STOCK_VALUES_FAILURE',
+                       msg: json
+                   });
+               }
+           });
         });
     };
 }

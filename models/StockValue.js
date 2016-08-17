@@ -81,20 +81,27 @@ const StockValue = {
 
     getAll() {
         return new Promise((resolve, reject) => {
-           knex.select('stock_id', 'value', 'day').from('stock_values').orderByRaw('day DESC, stock_id').then((result) => {
-               let sortedData = [];
-               result.forEach((item) => {
-                   for(let i = 0; i < sortedData.length; i++) {
-                       if(sortedData[i].day === formatDate(item.day)) {
-                           sortedData[i].stocks.push({id: item.stock_id, value: parseFloat(item.value)});
-                           return;
-                       }
+           knex.select('stock_id', 'symbol', 'value', 'day').from('stock_values')
+               .innerJoin('stocks', 'stock_values.stock_id', 'stocks.id')
+               .orderByRaw('stock_id, day').then((result) => {
+
+               let sortedData = [{
+                   stock_id: result[0].stock_id,
+                   name: result[0].symbol,
+                   data: [[Date.parse(formatDate(result[0].day)), parseFloat(result[0].value)]],
+               }];
+               for(let i = 1; i < result.length; i++) {
+                   let last = sortedData.length - 1;
+                   if (sortedData[last].stock_id === result[i].stock_id) {
+                       sortedData[last].data.push([Date.parse(formatDate(result[i].day)), parseFloat(result[i].value)]);
+                   } else {
+                       sortedData.push({
+                           stock_id: result[i].stock_id,
+                           name: result[i].symbol,
+                           data: [[Date.parse(formatDate(result[i].day)), parseFloat(result[i].value)]]
+                       });
                    }
-                   sortedData.push({
-                       day: formatDate(item.day),
-                       stocks: [{id: item.stock_id, value: parseFloat(item.value)}]
-                   });
-               });
+               }
 
               resolve(sortedData);
            }).catch((error) => {
