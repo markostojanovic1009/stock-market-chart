@@ -4,6 +4,17 @@ class StocksTable extends React.Component {
 
     constructor() {
         super();
+        this.state = {
+            symbol: ''
+        };
+    }
+
+    handleChange(event) {
+        this.setState({ symbol: event.target.value });
+    }
+
+    handleAddButtonClick() {
+        this.props.addStockHandle(this.state.symbol);
     }
 
     render() {
@@ -19,6 +30,12 @@ class StocksTable extends React.Component {
                             </li>
                         );
                     })}
+                    <li className="stock-wrapper stock-form">
+                        <input name="symbol" onChange={this.handleChange.bind(this)}
+                               value={this.state.symbol}
+                               type="text" placeholder="Stock symbol..." />
+                        <button className="button" onClick={this.handleAddButtonClick.bind(this)}>Add</button>
+                    </li>
                 </ul>
             </div>
         );

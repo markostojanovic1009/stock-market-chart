@@ -59,7 +59,6 @@ export function getAllStocks() {
 
 function getStockValues(symbols) {
     return (dispatch) => {
-        console.log('Called getStockValues with: ', symbols);
         const promiseArray = new Array(symbols.length);
         for(let i = 0; i < promiseArray.length; i++) {
              promiseArray[i] = new Promise((resolve, reject) => {
@@ -83,11 +82,48 @@ function getStockValues(symbols) {
             });
         }
         return Promise.all(promiseArray).then((values) => {
-            console.log('PROMISE values: ', values);
             dispatch({
                 type: 'RECEIVE_STOCK_VALUES_SUCCESS',
                 stockValues: values
             });
         });
     };
+}
+
+export function addStock(stockSymbol) {
+    return (dispatch) => {
+        dispatch({
+            type: 'FETCH_STOCK_INFO'
+        });
+        fetch('https://www.quandl.com/api/v3/datasets/WIKI/' + stockSymbol + '/metadata.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                return fetch('/api/stock', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        symbol: stockSymbol,
+                        description: json.dataset.name
+                    })
+                });
+            })
+            .then((stockResponse) => {
+                return stockResponse.json();
+            })
+            .then((json) => {
+                dispatch({
+                    type: 'ADD_STOCK_SUCCESS',
+                    stock: json
+                });
+                dispatch(getStockValues([stockSymbol]));
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 }

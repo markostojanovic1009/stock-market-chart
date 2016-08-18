@@ -9,7 +9,7 @@ export default function stockValues(state=initialState, action) {
         case "RECEIVE_STOCK_VALUES_SUCCESS":
             return Object.assign({}, state, {
                 isFetching: false,
-                items: action.stockValues.slice()
+                items: state.items.concat(action.stockValues)
             });
         default:
             return state;

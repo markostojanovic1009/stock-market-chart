@@ -9,12 +9,14 @@ function mapErrors(errors) {
 
 export function createStock(req, res) {
     const symbol = req.body.symbol;
+    const description = req.body.description;
+    console.log('SYMBOL: ', symbol, '\nDESC: ', description);
     req.assert('symbol', 'Symbol cannot be empty.').notEmpty();
     const errors = req.validationErrors();
     if(errors) {
         res.status(400).send(mapErrors(errors));
     }
-    Stock.create(symbol).then((stock) => {
+    Stock.create(symbol, description).then((stock) => {
         res.status(200).send(stock);
     }).catch((error) => {
         res.status(400).send(error);
