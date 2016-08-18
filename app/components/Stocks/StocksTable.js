@@ -9,12 +9,27 @@ class StocksTable extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.socket = this.props.socket;
+        this.socket.on('add-stock', (stock) => {
+            this.props.notifyChange({type: 'STOCK', payload: stock});
+        });
+        this.socket.on('receive-stock-values', (values) => {
+            this.props.notifyChange({type: 'STOCK_VALUES', payload: values});
+        });
+        this.socket.on('remove-stock', (removedStock) => {
+            this.props.notifyChange({type: 'REMOVED_STOCK', payload: removedStock});
+        })
+
+    }
+
     handleChange(event) {
         this.setState({ symbol: event.target.value });
     }
 
     handleAddButtonClick() {
         this.props.addStockHandle(this.state.symbol);
+        this.setState({symbol: ''});
     }
 
     handleDeleteButtonClick(stockId) {

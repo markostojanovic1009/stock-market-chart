@@ -41,7 +41,7 @@ function formatDate (date) {
 }
 
 
-function getStockValues(symbols) {
+function getStockValues(symbols, socket) {
     return (dispatch) => {
         dispatch({
             type: 'FETCH_STOCK_VALUES'
@@ -74,6 +74,8 @@ function getStockValues(symbols) {
             });
         }
         return Promise.all(promiseArray).then((values) => {
+            if(socket)
+                socket.emit('receive-stock-values-success', values);
             dispatch({
                 type: 'RECEIVE_STOCK_VALUES_SUCCESS',
                 stockValues: values
@@ -82,7 +84,7 @@ function getStockValues(symbols) {
     };
 }
 
-export function addStock(stockSymbol) {
+export function addStock(stockSymbol, socket) {
     return (dispatch) => {
         dispatch({
             type: 'FETCH_STOCK_INFO'
@@ -105,14 +107,20 @@ export function addStock(stockSymbol) {
                 });
             })
             .then((stockResponse) => {
-                return stockResponse.json();
+                if(stockResponse.ok)
+                    return stockResponse.json();
+                else
+                    return null;
             })
             .then((json) => {
-                dispatch({
-                    type: 'ADD_STOCK_SUCCESS',
-                    stock: json
-                });
-                dispatch(getStockValues([stockSymbol]));
+                if(json) {
+                    socket.emit('add-stock-success', json);
+                    dispatch({
+                        type: 'ADD_STOCK_SUCCESS',
+                        stock: json
+                    });
+                }
+                dispatch(getStockValues([stockSymbol], socket));
             })
             .catch((error) => {
                 console.log(error);
@@ -120,7 +128,32 @@ export function addStock(stockSymbol) {
     }
 }
 
-export function deleteStock(stockId) {
+export function notifyStateChange(change) {
+    switch(change.type) {
+        case 'STOCK':
+            return {
+                type: 'ADD_STOCK_SUCCESS',
+                stock: change.payload
+            };
+            break;
+        case 'STOCK_VALUES':
+            return {
+                type: 'RECEIVE_STOCK_VALUES_SUCCESS',
+                stockValues: change.payload
+            };
+            break;
+        case 'REMOVED_STOCK':
+            return {
+                type: 'REMOVE_STOCK_SUCCESS',
+                stockId: change.payload.stockId,
+                stockSymbol: change.payload.stockSymbol
+            };
+        default:
+            return;
+    }
+}
+
+export function deleteStock(stockId, socket) {
     return (dispatch) => {
         fetch(`/api/stock/${stockId}`, {
             method: 'DELETE',
@@ -131,6 +164,7 @@ export function deleteStock(stockId) {
         }).then((response) => {
             response.json().then((json) => {
                 if (response.ok) {
+                    socket.emit('remove-stock-success', { stockId, stockSymbol: json.symbol});
                     dispatch({
                         type: 'REMOVE_STOCK_SUCCESS',
                         stockId,

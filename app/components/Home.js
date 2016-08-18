@@ -3,19 +3,27 @@ import { connect } from 'react-redux'
 import Messages from './Messages';
 import StocksTable from './Stocks/StocksTable';
 import StocksChart from './Stocks/StocksChart';
-import { getAllStocks, addStock, deleteStock } from '../actions/stocks_actions';
+import { getAllStocks, addStock, deleteStock, notifyStateChange } from '../actions/stocks_actions';
+import io from 'socket.io-client';
+
+const socket = io('', {path: '/api/socket'});
 
 class Home extends React.Component {
+
     componentDidMount() {
         this.props.dispatch(getAllStocks());
     }
 
     addStockHandle(stockSymbol) {
-        this.props.dispatch(addStock(stockSymbol));
+        this.props.dispatch(addStock(stockSymbol, socket));
     }
 
     deleteStockHandle(stockId) {
-        this.props.dispatch(deleteStock(stockId));
+        this.props.dispatch(deleteStock(stockId, socket));
+    }
+
+    notifyChange(change) {
+        this.props.dispatch(notifyStateChange(change));
     }
 
     render() {
@@ -35,6 +43,8 @@ class Home extends React.Component {
                 <div className="medium-4 small-12 stock-table-wrapper">
                     <StocksTable addStockHandle={this.addStockHandle.bind(this)}
                                  deleteStockHandle={this.deleteStockHandle.bind(this)}
+                                 socket={socket}
+                                 notifyChange={this.notifyChange.bind(this)}
                                  stocks={this.props.stocks.items} />
                 </div>
             </div>

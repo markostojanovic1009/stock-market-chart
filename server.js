@@ -93,7 +93,25 @@ if (app.get('env') === 'production') {
   });
 }
 
-app.listen(app.get('port'), function() {
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {path: '/api/socket'});
+io.on('connection', (socket) => {
+
+  socket.on('add-stock-success', (stock) => {
+    socket.broadcast.emit('add-stock', stock);
+  });
+
+  socket.on('receive-stock-values-success', (values) => {
+    socket.broadcast.emit('receive-stock-values', values);
+  });
+
+  socket.on('remove-stock-success', (removedStock) => {
+    socket.broadcast.emit('remove-stock', removedStock);
+  });
+
+});
+
+server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
