@@ -29,7 +29,9 @@ class StocksTable extends React.Component {
                         return (
                             <li key={stock.id} className="stock-wrapper">
                                 <div className="stock-symbol">{stock.symbol}</div>
-                                <button className="button" onClick={this.handleDeleteButtonClick.bind(this, stock.id)}>Delete</button>
+                                <button className="stock-delete-button" onClick={this.handleDeleteButtonClick.bind(this, stock.id)}>
+                                    X
+                                </button>
                                 <div className="stock-description">{stock.description}</div>
                             </li>
                         );

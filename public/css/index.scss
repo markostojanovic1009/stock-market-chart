@@ -16,15 +16,24 @@
     display: inline-block;
 }
 
-.stock-created-at {
+.stock-delete-button {
     display: inline-block;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
     text-align: right;
-    width: 70%;
+    background-color: darkred;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    &:hover {
+        background-color: firebrick;
+    }
+    font-weight: bolder;
+    font-size: 1.2em;
+    vertical-align: top;
 }
 
 .stock-description {
-    display: inline-block;
     margin-top: 10px;
     font-size: 1.2em;
 }

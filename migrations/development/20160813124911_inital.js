@@ -17,17 +17,12 @@ exports.up = function(knex, Promise) {
             stocks.string('symbol').notNullable().unique();
             stocks.text('description');
             stocks.date('created_at').defaultTo(formatDate(new Date()));
-        }).createTable('stock_values', (table) => {
-            table.increments();
-            table.integer('stock_id').references('stocks.id').onDelete('CASCADE');
-            table.decimal('value', 14, 2).notNullable();
-            table.date('day').defaultTo(formatDate( new Date())).notNullable();
         })
     ])
 };
 
 exports.down = function(knex, Promise) {
     return Promise.all([
-        knex.schema.dropTableIfExists('stock_values').dropTableIfExists('stocks')
+        knex.schema.dropTableIfExists('stocks')
     ]);
 };

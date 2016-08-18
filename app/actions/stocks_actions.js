@@ -16,9 +16,6 @@ export function getAllStocks() {
                        type: 'RECEIVE_STOCKS_SUCCESS',
                        stocks: json
                    });
-                   dispatch({
-                       type: 'FETCH_STOCK_VALUES'
-                   });
                    dispatch(getStockValues(json.map(item => item.symbol)));
                } else {
                    dispatch({
@@ -31,45 +28,40 @@ export function getAllStocks() {
     };
 }
 
-/*export function getAllStockValues() {
+
+function formatDate (date) {
+    function fill(value) {
+        if(value < 10) {
+            return "0" + value.toString();
+        } else {
+            return value.toString();
+        }
+    }
+    return date.getFullYear() + "-" + fill(date.getMonth() + 1) + '-' + fill(date.getDate());
+}
+
+
+function getStockValues(symbols) {
     return (dispatch) => {
         dispatch({
             type: 'FETCH_STOCK_VALUES'
         });
-        return fetch('/api/stock/values/all', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        }).then((response) => {
-           return response.json().then((json) => {
-               if(response.ok) {
-                   dispatch({
-                       type: 'RECEIVE_STOCK_VALUES_SUCCESS',
-                       stockValues: json
-                   });
-               } else {
-                   dispatch({
-                       type: 'RECEIVE_STOCK_VALUES_FAILURE',
-                       msg: json
-                   });
-               }
-           });
-        });
-    };
-}*/
-
-function getStockValues(symbols) {
-    return (dispatch) => {
         const promiseArray = new Array(symbols.length);
         for(let i = 0; i < promiseArray.length; i++) {
              promiseArray[i] = new Promise((resolve, reject) => {
                 fetch('https://www.quandl.com/api/v3/datasets/WIKI/' + symbols[i] + '.json' +
-                    '?api_key=C3UE62CdFhxe2WfsM65n&start_date=2015-08-14&end_date=2016-08-14')
+                    '?api_key=C3UE62CdFhxe2WfsM65n&start_date=2015-08-14&end_date=' + formatDate(new Date()) )
                     .then((response) => {
                         return response.json();
                     })
                     .then((json) => {
+                        let color = '#';
+                        for(let i = 0; i < 6; i++) {
+                            color += Math.floor(Math.random() * 16).toString(16);
+                        }
                         const stockValues = {
                             name: json.dataset.dataset_code,
+                            color,
                             data: json.dataset.data.map((item) => {
                                 return [Date.parse(item[0]), item[4]];
                             }).reverse()
@@ -108,7 +100,7 @@ export function addStock(stockSymbol) {
                     },
                     body: JSON.stringify({
                         symbol: stockSymbol,
-                        description: json.dataset.name
+                        description: json.dataset.name.substring(0, json.dataset.name.indexOf('Prices'))
                     })
                 });
             })
@@ -137,9 +129,7 @@ export function deleteStock(stockId) {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-            console.log(response);
             response.json().then((json) => {
-                console.log(json);
                 if (response.ok) {
                     dispatch({
                         type: 'REMOVE_STOCK_SUCCESS',
