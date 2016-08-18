@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Messages from './Messages';
 import StocksTable from './Stocks/StocksTable';
 import StocksChart from './Stocks/StocksChart';
-import { getAllStocks, addStock } from '../actions/stocks_actions';
+import { getAllStocks, addStock, deleteStock } from '../actions/stocks_actions';
 
 class Home extends React.Component {
     componentDidMount() {
@@ -12,6 +12,10 @@ class Home extends React.Component {
 
     addStockHandle(stockSymbol) {
         this.props.dispatch(addStock(stockSymbol));
+    }
+
+    deleteStockHandle(stockId) {
+        this.props.dispatch(deleteStock(stockId));
     }
 
     render() {
@@ -29,7 +33,9 @@ class Home extends React.Component {
                     <StocksChart stocks={this.props.stocks.items}/>
                 </div>
                 <div className="medium-4 small-12 stock-table-wrapper">
-                    <StocksTable addStockHandle={this.addStockHandle.bind(this)} stocks={this.props.stocks.items} />
+                    <StocksTable addStockHandle={this.addStockHandle.bind(this)}
+                                 deleteStockHandle={this.deleteStockHandle.bind(this)}
+                                 stocks={this.props.stocks.items} />
                 </div>
             </div>
         );

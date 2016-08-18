@@ -127,3 +127,27 @@ export function addStock(stockSymbol) {
             })
     }
 }
+
+export function deleteStock(stockId) {
+    return (dispatch) => {
+        fetch(`/api/stock/${stockId}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            console.log(response);
+            response.json().then((json) => {
+                console.log(json);
+                if (response.ok) {
+                    dispatch({
+                        type: 'REMOVE_STOCK_SUCCESS',
+                        stockId,
+                        stockSymbol: json.symbol
+                    });
+                }
+            });
+        });
+    }
+}

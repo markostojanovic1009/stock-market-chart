@@ -11,6 +11,12 @@ export default function stockValues(state=initialState, action) {
                 isFetching: false,
                 items: state.items.concat(action.stockValues)
             });
+        case "REMOVE_STOCK_SUCCESS":
+            return Object.assign({}, state, {
+                items: state.items.filter((item) => {
+                    return item.name !== action.stockSymbol
+                })
+            });
         default:
             return state;
     }

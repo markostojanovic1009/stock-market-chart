@@ -25,8 +25,8 @@ export function createStock(req, res) {
 
 export function removeStock(req, res) {
    const stockId = req.params.stockId;
-   Stock.remove(stockId).then(() => {
-       res.sendStatus(204);
+   Stock.remove(stockId).then((data) => {
+       res.status(200).send(data);
    }).catch((error) => {
        res.status(400).send(error);
    });

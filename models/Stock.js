@@ -63,13 +63,17 @@ const Stock = {
     },
 
     remove(stockId) {
+        let removedStockSymbol = '';
         return new Promise((resolve, reject) => {
-            return knex('stocks')
-                .where('id', stockId)
-                .del().then(() => {
-                    resolve();
-                }).catch((error) => {
-                    reject(genericMessage);
+            return knex.select('symbol').from('stocks').where('id', '=', stockId)
+                .then((symbol) => {
+                    return knex('stocks')
+                        .where('id', stockId)
+                        .del().then(() => {
+                            resolve(symbol[0]);
+                        }).catch((error) => {
+                            reject(genericMessage);
+                        });
                 });
         });
     }

@@ -17,6 +17,10 @@ class StocksTable extends React.Component {
         this.props.addStockHandle(this.state.symbol);
     }
 
+    handleDeleteButtonClick(stockId) {
+        this.props.deleteStockHandle(stockId);
+    }
+
     render() {
         return (
             <div>
@@ -25,7 +29,7 @@ class StocksTable extends React.Component {
                         return (
                             <li key={stock.id} className="stock-wrapper">
                                 <div className="stock-symbol">{stock.symbol}</div>
-                                <div className="stock-created-at">Tracking since:  {stock.created_at}</div>
+                                <button className="button" onClick={this.handleDeleteButtonClick.bind(this, stock.id)}>Delete</button>
                                 <div className="stock-description">{stock.description}</div>
                             </li>
                         );

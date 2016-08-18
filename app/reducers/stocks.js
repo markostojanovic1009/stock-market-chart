@@ -16,6 +16,12 @@ export default function stocks(state=initialState, action) {
                 isFetching: false,
                 items: [...state.items, action.stock]
             });
+        case "REMOVE_STOCK_SUCCESS":
+            return Object.assign({}, state, {
+               items: state.items.filter((item) => {
+                   return item.id !== action.stockId
+               })
+            });
         default:
             return state;
     }
