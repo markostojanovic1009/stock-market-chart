@@ -43,11 +43,16 @@
   display: inline-block; }
 
 .stock-chart-wrapper {
-  vertical-align: top;
-  margin: 20px 0 0 20px; }
+  vertical-align: top; }
+  @media screen and (min-width: 40em) {
+    .stock-chart-wrapper {
+      margin: 20px 0 0 20px; } }
 
 .stock-table-wrapper {
-  margin-left: 20px; }
+  margin-top: 20px; }
+  @media screen and (min-width: 40em) {
+    .stock-table-wrapper {
+      margin-left: 20px; } }
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**

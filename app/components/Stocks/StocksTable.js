@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Messages from '../Messages';
 class StocksTable extends React.Component {
 
     constructor() {
@@ -58,6 +59,7 @@ class StocksTable extends React.Component {
                         <button className="button" onClick={this.handleAddButtonClick.bind(this)}>Add</button>
                     </li>
                 </ul>
+                <Messages messages={this.props.messages} />
             </div>
         );
     }

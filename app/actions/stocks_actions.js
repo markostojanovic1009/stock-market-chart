@@ -49,8 +49,9 @@ function getStockValues(symbols, socket) {
         const promiseArray = new Array(symbols.length);
         for(let i = 0; i < promiseArray.length; i++) {
              promiseArray[i] = new Promise((resolve, reject) => {
-                fetch('https://www.quandl.com/api/v3/datasets/WIKI/' + symbols[i] + '.json' +
-                    '?api_key=C3UE62CdFhxe2WfsM65n&start_date=2015-08-14&end_date=' + formatDate(new Date()) )
+                 const API_KEY = process.env.API_KEY;
+                 console.log(process.env.NODE_ENV);
+                fetch(`https://www.quandl.com/api/v3/datasets/WIKI/${symbols[i]}.json?api_key=${API_KEY}&start_date=2015-08-14&end_date=${formatDate(new Date())}`)
                     .then((response) => {
                         return response.json();
                     })
@@ -89,9 +90,15 @@ export function addStock(stockSymbol, socket) {
         dispatch({
             type: 'FETCH_STOCK_INFO'
         });
-        fetch('https://www.quandl.com/api/v3/datasets/WIKI/' + stockSymbol + '/metadata.json')
+        fetch(`https://www.quandl.com/api/v3/datasets/WIKI/${stockSymbol}/metadata.json`)
             .then((response) => {
-                return response.json();
+                if(response.ok)
+                    return response.json();
+                else
+                    throw {
+                        status: 404,
+                        msg: `Stock with symbol ${stockSymbol} doesn't exist.`
+                    };
             })
             .then((json) => {
                 return fetch('/api/stock', {
@@ -123,8 +130,12 @@ export function addStock(stockSymbol, socket) {
                 dispatch(getStockValues([stockSymbol], socket));
             })
             .catch((error) => {
-                console.log(error);
-            })
+                const msg = error.status === 404 ? error.msg : 'An error occurred. Please try later';
+                dispatch({
+                    type: 'ADD_STOCK_FAILURE',
+                    msg: [{msg}]
+                });
+            });
     }
 }
 

@@ -22,8 +22,6 @@ export default function stocks(state=initialState, action) {
                    return item.id !== action.stockId
                })
             });
-        case "NOTIFY_STOCK_ADDED":
-            return Object.assign({}, state);
         default:
             return state;
     }

@@ -1,3 +1,4 @@
+@import '_settings.scss';
 .stocks-table {
     list-style: none;
     margin-right: 30px;
@@ -44,9 +45,16 @@
 
 .stock-chart-wrapper {
     vertical-align: top;
-    margin: 20px 0 0 20px;
+    @include breakpoint(medium) {
+        margin: 20px 0 0 20px;
+    }
 }
 
 .stock-table-wrapper {
-    margin-left: 20px;
+    @include breakpoint(medium) {
+        margin-left: 20px;
+    }
+    @include breakpoint(small) {
+        margin-top: 20px;
+    }
 }

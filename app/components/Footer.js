@@ -4,7 +4,10 @@ class Footer extends React.Component {
   render() {
     return (
       <footer>
-        <p>© 2016 Company, Inc. All Rights Reserved.</p>
+        <p>© 2016 Marko Stojanovic. All Rights Reserved. Charts provided by
+          <a href="http://highcharts.com">Highcharts</a>. Stock Market data provided
+          by <a href="http://www.quandl.com">Quandl</a>.
+        </p>
       </footer>
     );
   }

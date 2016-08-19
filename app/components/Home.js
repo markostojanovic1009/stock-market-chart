@@ -36,7 +36,6 @@ class Home extends React.Component {
         return (
             <div className="expanded row">
                 {loading}
-                <Messages messages={this.props.messages}/>
                 <div className="medium-7 small-12 stock-chart-wrapper">
                     <StocksChart stocks={this.props.stocks.items}/>
                 </div>
@@ -54,7 +53,6 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        messages: state.messages,
         stocks: state.stocks
     };
 };
