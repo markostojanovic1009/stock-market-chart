@@ -54,7 +54,6 @@ const Stock = {
                     resolve(array[0]);
                }).catch((error) => {
                     if(error.code == '23505') { // Postgres code for unique violation
-                        console.log(error);
                         reject({msg: `Company with symbol ${stockSymbol.toUpperCase()} was already added.`});
                     } else {
                         reject(genericMessage);

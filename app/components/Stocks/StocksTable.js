@@ -12,12 +12,18 @@ class StocksTable extends React.Component {
 
     componentDidMount() {
         this.socket = this.props.socket;
+
+        /*
+         * Calls notifyChange to update the state based on an event emitted by the server
+         */
         this.socket.on('add-stock', (stock) => {
             this.props.notifyChange({type: 'STOCK', payload: stock});
         });
+
         this.socket.on('receive-stock-values', (values) => {
             this.props.notifyChange({type: 'STOCK_VALUES', payload: values});
         });
+
         this.socket.on('remove-stock', (removedStock) => {
             this.props.notifyChange({type: 'REMOVED_STOCK', payload: removedStock});
         })

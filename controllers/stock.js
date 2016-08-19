@@ -6,10 +6,15 @@ function mapErrors(errors) {
     });
 }
 
+/**
+ * POST /api/stock.
+ * Receives symbol and description.
+ * Responds with 200 and the new stock({id, symbol, description})
+ * on success and 400 with error({msg})
+ */
 export function createStock(req, res) {
     const symbol = req.body.symbol;
     const description = req.body.description;
-    console.log('SYMBOL: ', symbol, '\nDESC: ', description);
     req.assert('symbol', 'Symbol cannot be empty.').notEmpty();
     const errors = req.validationErrors();
     if(errors) {
@@ -21,7 +26,9 @@ export function createStock(req, res) {
         res.status(400).send(error);
     });
 }
-
+/**
+ * DELETE /api/stock/:stockId
+ */
 export function removeStock(req, res) {
    const stockId = req.params.stockId;
    Stock.remove(stockId).then((data) => {

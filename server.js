@@ -97,6 +97,10 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {path: '/api/socket'});
 io.on('connection', (socket) => {
 
+  /*
+   * Passes the data between the client that triggered an action
+   * and other clients.
+   */
   socket.on('add-stock-success', (stock) => {
     socket.broadcast.emit('add-stock', stock);
   });
